@@ -1,0 +1,52 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                            .:.               #
+#    Pixel.doc                                          .+:  :+:  :+.          #
+#                                                      +:+   +:+   :+:         #
+#    By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:        #
+#                                                      +#+   '+'   +#+         #
+#    Created:  2015/12/11 19:23:01 by rvagner           +#+,     ,+#+          #
+#    Modified: 2015/12/11 20:10:37 by rvagner             '*+###+*'            #
+#                                                                              #
+# **************************************************************************** #
+
+The Pixel class' purpose is to print Pixels on the screen.
+
+Attributes:
+- int _x -> the x coordinate of the Pixel. Private.
+- int _y -> the y coordinate of the Pixel. Private.
+- Uint32 _color -> the color of the Pixel, in integer. Private.
+
+Constructors:
+- Pixel(void):
+	The default constructor, creates a white Pixel at pos (0;0).
+- Pixel(int x, int y, int red, int green, int blue):
+	Constructs a Pixel at pos (x;y) and converts the rgb into an integer.
+- Pixel(int x, int y, Uint32 color):
+	Constructs a Pixel at pos (x;y), with a color integer.
+- Pixel(Pixel const &src):
+	Constructs a Pixel by copying src.
+
+Member function:
+- void draw(SDL_Surface *surface) const:
+	Draws itself on the screen 'surface'. Can be done on constant Pixels.
+
+Getters:
+- int getX(void) const:
+	Returns the x coordinate of the Pixel. Can be done on constant Pixels.
+- int getY(void) const:
+	Returns the y coordinate of the Pixel. Can be done on constant Pixels.
+- int getColor(void) const:
+	Returns the color value of the Pixel. Can be done on constant Pixels.
+
+Setters:
+- void setX(int x):
+	sets the x coordinate of the Pixel to 'x'.
+- void setY(int y):
+	sets the y coordinate of the Pixel to 'y'.
+- void setColor(Uint32 color):
+	sets the color of the Pixel to 'color'.
+- void setColor(int red, int green, int blue):
+	sets the color of the Pixel to rgb converted into an integer.
+
+The = operator has been overloaded, so it is possible to assign Pixels.
