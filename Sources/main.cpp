@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 13:03:00 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/12 18:16:17 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/14 08:53:47 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 #include "raytracer.h"
 #include "Camera.hpp"
 #include "Sphere.hpp"
+#include "Image.hpp"
 
-void		draw_pixels(Pixel ***pixels, SDL_Surface *screen, Camera &cam, Sphere &sphere)
+void		draw_pixels(Image &image, Camera &cam, Sphere &sphere)
 {
 	int	x = 0;
 	while (x < W)
@@ -24,15 +25,15 @@ void		draw_pixels(Pixel ***pixels, SDL_Surface *screen, Camera &cam, Sphere &sph
 		while (y < H)
 		{
 			double t = -1;
-			(*pixels)[x][y].setColor(0x000000); // same as setColor(255, 0, 255);
 			if ((t = sphere.intersect(cam.build_ray(x + W * 0.5, y))) > 0)
-				(*pixels)[x][y].setColor(sphere.getColor());
-			(*pixels)[x][y].draw(screen);
+				image.setPixel(x, y, sphere.getColor());
+			else
+				image.setPixel(x, y, 0x000000);
 			y++;
 		}
 		x++;
 	}
-
+	image.draw();
 }
 
 int			main(void)
@@ -41,7 +42,7 @@ int			main(void)
 	SDL_Surface		*screen = process.getScreen();
 	SDL_Event		*ev = new SDL_Event();
 	Uint8 const		*keys = SDL_GetKeyboardState(NULL);
-	Pixel			**pixels = new Pixel *[W];
+	Image			image(W, H, screen);
 	Camera			camera(
 			Point(0.0, 0.0, 100.0),
 			Point(0.0, 0.0, 0.0),
@@ -52,41 +53,25 @@ int			main(void)
 			);
 	Sphere			sphere(Point(0.0, 0.0, 0.0), 8.0, 0xFF0000);
 
-	for (int i = 0; i < W; i++)
-		pixels[i] = new Pixel[H];
-	int	x = 0;
-	while (x < W)
-	{
-		int	y = 0;
-		while (y < H)
-		{
-			pixels[x][y].setX(x);
-			pixels[x][y].setY(y);
-			y++;
-		}
-		x++;
-	}
-
+	draw_pixels(image, camera, sphere);
+	process.update();
 	while (true)
 	{
-		if (process.check_ticks(60))
+		SDL_PollEvent(ev);
+		if (ev->type == SDL_QUIT)
+			break ;
+		else if (ev->type == SDL_KEYDOWN)
 		{
-			SDL_PollEvent(ev);
-			if (ev->type == SDL_QUIT)
+			if (keys[SDL_SCANCODE_ESCAPE])
 				break ;
-			else if (ev->type == SDL_KEYDOWN)
-			{
-				if (keys[SDL_SCANCODE_ESCAPE])
-					break ;
-			}
-			draw_pixels(&pixels, screen, camera, sphere);
+		}
+		if (process.check_ticks(500))
+		{
+			draw_pixels(image, camera, sphere);
 			process.update();
 		}
 	}
 
-	for (int i = 0; i < W; i++)
-		delete [] pixels[i];
-	delete [] pixels;
 	delete ev;
 	return (0);
 }

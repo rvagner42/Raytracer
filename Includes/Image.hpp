@@ -1,37 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                           .:.              */
-/*   Process.hpp                                        .+:  :+:  :+.         */
+/*   Image.hpp                                          .+:  :+:  :+.         */
 /*                                                     +:+   +:+   :+:        */
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
-/*   Created:  2015/12/11 18:57:49 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/14 08:51:22 by rvagner             '*+###+*'           */
+/*   Created:  2015/12/14 08:07:10 by rvagner           +#+,     ,+#+         */
+/*   Modified: 2015/12/14 08:49:17 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PROCESS_H
-# define PROCESS_H
+#ifndef IMAGE_H
+# define IMAGE_H
 
 # include "raytracer.h"
 
-class Process
+class Image
 {
 	public:
-		Process(void);
-		Process(char const *win_name);
-		virtual ~Process(void);
+		Image(int size_x, int size_y, SDL_Surface *screen);
+		~Image(void);
 
-// ----- Member functions -----
-		void			update(void);
-		bool			check_ticks(int n);
+//----- Member functions -----
+		void			draw(void);
 
-// ----- Getters & Setters -----
-		SDL_Surface		*getScreen(void) const;
+//----- Getters & Setters -----
+		void			setPixel(int x, int y, Uint32 color);
+		void			setPixel(int x, int y, int red, int green, int blue);
 
 	private:
-		SDL_Window	*_win;
-		SDL_Surface	*_screen;
+		int				_size_x;
+		int				_size_y;
+		Uint32			**_pixels;
+		Uint32			*_data;
 };
 
 #endif
