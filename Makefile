@@ -6,7 +6,7 @@
 #    By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:        #
 #                                                      +#+   '+'   +#+         #
 #    Created:  2015/12/11 18:59:19 by rvagner           +#+,     ,+#+          #
-#    Modified: 2015/12/14 14:06:09 by rvagner             '*+###+*'            #
+#    Modified: 2015/12/14 14:30:37 by rvagner             '*+###+*'            #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRC = main.cpp \
 	Object.cpp \
 	Image.cpp \
 	Point.cpp \
-	Process.cpp\
+	Process.cpp \
 	Ray.cpp \
 	Scene.cpp \
 	Sphere.cpp \

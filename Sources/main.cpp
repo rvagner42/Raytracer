@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 13:03:00 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/14 14:15:38 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/14 14:47:03 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,13 @@ int			main(void)
 			if (keys[SDL_SCANCODE_ESCAPE])
 				break ;
 		}
-		if (process.check_ticks(500))
-		{
-			scene.computeImage(image, camera);
-			process.update();
-		}
+		/*
+		 *if (process.check_ticks(500))
+		 *{
+		 *    scene.computeImage(image, camera);
+		 *    process.update();
+		 *}
+		 */
 	}
 
 	delete ev;
