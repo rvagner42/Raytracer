@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 13:03:00 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/14 14:47:03 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/14 15:14:33 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,29 @@ int			main(void)
 	process.update();
 	while (true)
 	{
-		SDL_PollEvent(ev);
-		if (ev->type == SDL_QUIT)
-			break ;
-		else if (ev->type == SDL_KEYDOWN)
+		if (process.check_ticks(100))
 		{
-			if (keys[SDL_SCANCODE_ESCAPE])
+			SDL_PollEvent(ev);
+			if (ev->type == SDL_QUIT)
 				break ;
+			else if (ev->type == SDL_KEYDOWN)
+			{
+				if (keys[SDL_SCANCODE_ESCAPE])
+					break ;
+				int x = 0, y = 0, z = 0;
+				if (keys[SDL_SCANCODE_DOWN])
+					y += 1.5;
+				if (keys[SDL_SCANCODE_UP])
+					y -= 1.5;
+				if (keys[SDL_SCANCODE_LEFT])
+					x -= 1.5;
+				if (keys[SDL_SCANCODE_RIGHT])
+					x += 1.5;
+				camera.move(x, y, z);
+				scene.computeImage(image, camera);
+				process.update();
+			}
 		}
-		/*
-		 *if (process.check_ticks(500))
-		 *{
-		 *    scene.computeImage(image, camera);
-		 *    process.update();
-		 *}
-		 */
 	}
 
 	delete ev;
