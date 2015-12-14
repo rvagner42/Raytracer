@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 13:03:00 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/14 08:53:47 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/14 14:15:38 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,7 @@
 #include "Camera.hpp"
 #include "Sphere.hpp"
 #include "Image.hpp"
-
-void		draw_pixels(Image &image, Camera &cam, Sphere &sphere)
-{
-	int	x = 0;
-	while (x < W)
-	{
-		int	y = 0;
-		while (y < H)
-		{
-			double t = -1;
-			if ((t = sphere.intersect(cam.build_ray(x + W * 0.5, y))) > 0)
-				image.setPixel(x, y, sphere.getColor());
-			else
-				image.setPixel(x, y, 0x000000);
-			y++;
-		}
-		x++;
-	}
-	image.draw();
-}
+#include "Scene.hpp"
 
 int			main(void)
 {
@@ -51,9 +32,18 @@ int			main(void)
 			100.0,
 			W / H
 			);
-	Sphere			sphere(Point(0.0, 0.0, 0.0), 8.0, 0xFF0000);
+	Sphere			sphere1(Point(0.0, 0.0, 0.0), 8.0, 0xFF0000);
+	Sphere			sphere2(Point(6.0, 5.0, 0.0), 5.0, 0x00FF00);
+	Sphere			sphere3(Point(0.0, 5.0, 5.0), 5.0, 0x0000FF);
+	Sphere			sphere4(Point(-3.0, -2.0, 15.0), 2.0, 0x00FFFF);
+	Scene			scene;
 
-	draw_pixels(image, camera, sphere);
+	scene.addObject(&sphere1);
+	scene.addObject(&sphere2);
+	scene.addObject(&sphere3);
+	scene.addObject(&sphere4);
+
+	scene.computeImage(image, camera);
 	process.update();
 	while (true)
 	{
@@ -67,7 +57,7 @@ int			main(void)
 		}
 		if (process.check_ticks(500))
 		{
-			draw_pixels(image, camera, sphere);
+			scene.computeImage(image, camera);
 			process.update();
 		}
 	}

@@ -1,26 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                           .:.              */
-/*   raytracer.h                                        .+:  :+:  :+.         */
+/*   Scene.hpp                                          .+:  :+:  :+.         */
 /*                                                     +:+   +:+   :+:        */
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
-/*   Created:  2015/12/11 18:56:30 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/14 09:14:01 by rvagner             '*+###+*'           */
+/*   Created:  2015/12/14 09:08:31 by rvagner           +#+,     ,+#+         */
+/*   Modified: 2015/12/14 14:07:52 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RAYTRACER_H
-# define RAYTRACER_H
+#ifndef SCENE_H
+# define SCENE_H
 
-# define W 800
-# define H 800
-# define X_RES 800
-# define Y_RES 800
+# include "raytracer.h"
+# include "Image.hpp"
+# include "Object.hpp"
+# include "Camera.hpp"
 
-# include <SDL2/SDL.h>
-# include <SDL2/SDL_image.h>
-# include <iostream>
-# include <vector>
+class Scene
+{
+	public:
+		Scene(void);
+		~Scene(void);
+
+//----- Member functions -----
+		void					computeImage(Image &image, Camera &camera);
+
+//----- Getters & Setters -----
+		void					addObject(Object *obj);
+
+	private:
+		std::vector<Object *>		_objects;
+};
 
 #endif
