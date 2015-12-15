@@ -2,8 +2,6 @@
 
 A simple raytracer, implemented in C++, using backwards raytracing.
 
-It is possible to move the camera by using the arrow keys.
-
 To compile:
 - If you don't have the SDL2 installed, you can do it via brew:
 	- brew update
