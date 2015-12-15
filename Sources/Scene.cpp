@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/14 11:04:55 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/14 17:37:26 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/15 10:17:35 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void							Scene::computeImage(Image &image, Camera &camera)
 			t_min = INFINITY;
 			closest = NULL;
 			it = this->_objects.begin();
-			ray = camera.build_ray(x, y);
+			ray = camera.build_ray(x + W * 0.5, y);
 			while (it != ite)
 			{
 				if ((t = (*it)->intersect(ray)) > 0)

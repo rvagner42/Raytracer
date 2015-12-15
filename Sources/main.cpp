@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 13:03:00 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/14 17:38:38 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/15 10:29:00 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,6 @@
 #include "Image.hpp"
 #include "Scene.hpp"
 
-double		rot(double shift, double limit)
-{
-	if (shift < -1 * limit / 2)
-		shift = limit / 2;
-	else if (shift > limit / 2)
-		shift = -1 * limit / 2;
-	return (shift);
-}
-
 int			main(void)
 {
 	Process			process;
@@ -34,11 +25,11 @@ int			main(void)
 	Uint8 const		*keys = SDL_GetKeyboardState(NULL);
 	Image			image(W, H, screen);
 	Camera			camera(
-			Point(0.0, 0.0, 500.0),
+			Point(0.0, 0.0, 50.0),
 			Point(0.0, 0.0, 0.0),
 			Vector(Point(0.0, 1.0, 0.0)),
-			100.0,
-			100.0,
+			10.0,
+			10.0,
 			W / H
 			);
 	Sphere			sphere1(Point(0.0, 0.0, 0.0), 8.0, 0xFF0000);
@@ -54,7 +45,6 @@ int			main(void)
 
 	scene.computeImage(image, camera);
 	process.update();
-	double h_shift = 0, v_shift = 0;
 	while (true)
 	{
 		if (process.check_ticks(100))
@@ -64,20 +54,18 @@ int			main(void)
 				break ;
 			else if (ev->type == SDL_KEYDOWN)
 			{
+				double x = 0, y = 0, z = 0;
 				if (keys[SDL_SCANCODE_ESCAPE])
 					break ;
 				if (keys[SDL_SCANCODE_DOWN])
-					v_shift += 0.02;
+					y += 1;
 				if (keys[SDL_SCANCODE_UP])
-					v_shift -= 0.02;
+					y -= 1;
 				if (keys[SDL_SCANCODE_LEFT])
-					h_shift -= 0.02;
+					x -= 1;
 				if (keys[SDL_SCANCODE_RIGHT])
-					h_shift += 0.02;
-				h_shift = rot(h_shift, M_PI);
-				v_shift = rot(v_shift, 2 * M_PI);
-				std::cout << h_shift << " " << v_shift << std::endl;
-				camera.move(h_shift, v_shift);
+					x += 1;
+				camera.move(x, y, z);
 				scene.computeImage(image, camera);
 				process.update();
 			}

@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 09:18:57 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/14 17:22:41 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/15 10:23:13 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 Camera::Camera(Point ep, Point coi, Vector up, double d, double fov, double ratio):
 	_ep(ep), _coi(coi), _up(up), _d(d), _fov(fov), _ratio(ratio)
 {
-	double			x = pow((ep.getX() - coi.getX()), 2);
-	double			y = pow((ep.getY() - coi.getY()), 2);
-	double			z = pow((ep.getZ() - coi.getZ()), 2);
-
-	this->_radius = sqrt(x + y + z);
 	this->calc_basis();
 }
 
@@ -84,13 +79,13 @@ Ray				Camera::build_ray(int x, int y)
 	return (ray);
 }
 
-void			Camera::move(double h_shift, double v_shift)
+void			Camera::move(double x, double y, double z)
 {
-	Point		new_pos;
+	Point		new_pos(this->getEyePosition());
 
-	new_pos.setX(this->getCenterOfInterest().getX() + this->_radius * cos(v_shift) * sin(h_shift));
-	new_pos.setY(this->getCenterOfInterest().getY() + this->_radius * sin(v_shift) * sin(h_shift));
-	new_pos.setZ(this->getCenterOfInterest().getZ() + this->_radius * cos(h_shift));
+	new_pos.setX(new_pos.getX() + x);
+	new_pos.setY(new_pos.getY() + y);
+	new_pos.setZ(new_pos.getZ() + z);
 
 	this->setEyePosition(new_pos);
 	this->calc_basis();
