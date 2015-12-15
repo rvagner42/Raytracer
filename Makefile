@@ -6,7 +6,7 @@
 #    By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:        #
 #                                                      +#+   '+'   +#+         #
 #    Created:  2015/12/11 18:59:19 by rvagner           +#+,     ,+#+          #
-#    Modified: 2015/12/14 14:30:37 by rvagner             '*+###+*'            #
+#    Modified: 2015/12/15 08:09:59 by rvagner             '*+###+*'            #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,16 +27,14 @@ SRC_DIR = Sources/
 
 INC = Includes/
 
-SDL_INC = -I/Volumes/Data/nfs/zfs-student-3/users/rvagner/.brew/include -D_THREAD_SAFE
-SDL_LIB = -L/Volumes/Data/nfs/zfs-student-3/users/rvagner/.brew/lib
+SDL_INC = -I/nfs/zfs-student-3/users/rvagner/.brew/include/SDL2 -D_THREAD_SAFE
+SDL_LIB = -L/nfs/zfs-student-3/users/rvagner/.brew/lib -lSDL2
 
 OBJ = $(SRC:.cpp=.o)
 
 CC = clang++
 
-FLAGS = -Wall -Werror -Wextra
-
-LIB = -lSDL2
+FLAGS = -Wall -Werror -Wextra -O3
 
 all: $(NAME)
 
@@ -45,7 +43,7 @@ $(NAME):
 	@$(CC) $(FLAGS) -c $(addprefix $(SRC_DIR), $(SRC)) -I ./$(INC) $(SDL_INC)
 	@echo "[\033[1;32mok\033[0m]"
 	@echo "Objets -> $(NAME) ... \c"
-	@$(CC) $(OBJ) -o $(NAME) $(SDL_LIB) $(LIB) -I ./$(INC) $(SDL_INC)
+	@$(CC) $(OBJ) -o $(NAME) $(SDL_LIB) -I ./$(INC) $(SDL_INC)
 	@echo "[\033[1;32mok\033[0m]"
 	@echo "Compilation terminée !"
 	@mkdir Objets

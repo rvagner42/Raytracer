@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 09:05:10 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/14 15:04:00 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/14 17:20:21 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ class Camera
 		void		calc_img(void);
 		Ray			build_ray(int x, int y);
 
-		void		move(int x, int y, int z);
+		void		move(double h_shift, double v_shift);
 
 //----- Getters & Setters -----
 		Point		getEyePosition(void) const;
@@ -52,6 +52,7 @@ class Camera
 		double		_d;
 		double		_fov;
 		double		_ratio;
+		double		_radius;
 
 		Vector		_n;
 		Vector		_u;
