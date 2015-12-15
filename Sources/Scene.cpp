@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/14 11:04:55 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/15 15:55:04 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/15 17:13:27 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void							Scene::computeImage(Image &image, Camera &camera)
 			t_min = INFINITY;
 			closest = NULL;
 			it = this->_objects.begin();
-			ray = camera.build_ray(x + W * 0.5, y);
+			ray = camera.build_ray(x, y);
 			while (it != ite)
 			{
 				if ((t = (*it)->intersect(ray)) > 0)
@@ -67,14 +67,9 @@ void							Scene::computeImage(Image &image, Camera &camera)
 	image.draw();
 }
 
-Uint32							Scene::computeColor(Point p, double t, Ray &ray, Uint32 color)
+Uint32							Scene::computeColor(Vector p, double t, Ray &ray, Uint32 color)
 {
-	Point			surface(ray.getOrigin());
-	Vector			dist(ray.getDirection() * t);
-
-	surface.setX(surface.getX() + dist.getX());
-	surface.setY(surface.getY() + dist.getY());
-	surface.setZ(surface.getZ() + dist.getZ());
+	Vector			surface(ray.getOrigin() + ray.getDirection() * t);
 
 	Vector			norm(surface, p);
 	norm.normalize();
@@ -100,7 +95,7 @@ void							Scene::addObject(Object *obj)
 	this->_objects.push_back(obj);
 }
 
-void							Scene::addLight(Point light)
+void							Scene::addLight(Vector light)
 {
 	this->_lights.push_back(light);
 }

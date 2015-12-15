@@ -6,22 +6,22 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/11 21:47:29 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/11 22:01:44 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/15 17:10:04 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_H
 # define VECTOR_H
 
-# include "Point.hpp"
+# include "raytracer.h"
 # include <cmath>
 
 class Vector
 {
 	public:
 		Vector(void);
-		Vector(Point const &dest);
-		Vector(Point const &orig, Point const &dest);
+		Vector(double x, double y, double z);
+		Vector(Vector const &orig, Vector const &dest);
 		Vector(Vector const &src);
 		virtual ~Vector(void);
 

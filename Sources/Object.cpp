@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 15:12:12 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/15 15:18:55 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/15 17:02:40 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ Uint32				Object::getColor(void) const
 	return (this->_color);
 }
 
-Point				Object::getCenter(void) const
+Vector				Object::getCenter(void) const
 {
 	return (this->_center);
 }
 
-void				Object::setCenter(Point const &center)
+void				Object::setCenter(Vector const &center)
 {
 	this->_center = center;
 }

@@ -6,13 +6,13 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 09:18:57 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/15 12:37:55 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/15 17:11:16 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Camera.hpp"
 
-Camera::Camera(Point ep, Point coi, Vector up, double d, double fov, double ratio):
+Camera::Camera(Vector ep, Vector coi, Vector up, double d, double fov, double ratio):
 	_ep(ep), _coi(coi), _up(up), _d(d), _fov(fov), _ratio(ratio)
 {
 	this->calc_basis();
@@ -39,26 +39,12 @@ void			Camera::calc_basis(void)
 
 void			Camera::calc_img(void)
 {
-	double		height;
-	double		width;
-	Point		image_center;
-	Vector		n_dist;
-	Vector		u_corner;
-	Vector		v_corner;
+	double		height = tan(this->getFOV() * 0.5) * this->getDist() * 2;
+	double		width = height * this->getRatio();
 
-	height = tan(this->getFOV() * 0.5) * this->getDist() * 2;
-	width = height * this->getRatio();
-
-	n_dist = this->_n * this->getDist();
-	image_center.setX(this->getEyePosition().getX() - n_dist.getX());
-	image_center.setY(this->getEyePosition().getY() - n_dist.getY());
-	image_center.setZ(this->getEyePosition().getZ() - n_dist.getZ());
+	Vector		image_center(this->getEyePosition() - (this->_n * this->getDist()));
 	
-	u_corner = this->_u * (width * 0.5);
-	v_corner = this->_v * (height * 0.5);
-	this->_blc.setX(image_center.getX() - u_corner.getX() - v_corner.getY());
-	this->_blc.setY(image_center.getY() - u_corner.getY() - v_corner.getY());
-	this->_blc.setZ(image_center.getZ() - u_corner.getZ() - v_corner.getY());
+	this->_blc = image_center - (this->_u * (width * 0.5)) - (this->_v * (height * 0.5));
 
 	this->_pw = width / X_RES;
 	this->_ph = height / Y_RES;
@@ -67,25 +53,20 @@ void			Camera::calc_img(void)
 Ray				Camera::build_ray(int x, int y)
 {
 	Ray		ray;
-	Point	screen_pixel;
-	Vector	u(this->_u * x * this->_pw);
-	Vector	v(this->_v * y * this->_ph);
+	Vector	screen_pixel(this->_blc + (this->_u * x * this->_pw) + (this->_v * y * this->_ph));
 
-	screen_pixel.setX(this->_blc.getX() + u.getX() + v.getX());
-	screen_pixel.setY(this->_blc.getY() + u.getY() + v.getY());
-	screen_pixel.setZ(this->_blc.getZ() + u.getZ() + v.getZ());
 	ray.setOrigin(this->getEyePosition());
 	ray.setDirection(Vector(this->getEyePosition(), screen_pixel));
 	return (ray);
 }
 
 //----- Getters & Setters -----
-Point			Camera::getEyePosition(void) const
+Vector			Camera::getEyePosition(void) const
 {
 	return (this->_ep);
 }
 
-Point			Camera::getCenterOfInterest(void) const
+Vector			Camera::getCenterOfInterest(void) const
 {
 	return (this->_coi);
 }
@@ -110,12 +91,12 @@ double			Camera::getRatio(void) const
 	return (this->_ratio);
 }
 
-void			Camera::setEyePosition(Point const &ep)
+void			Camera::setEyePosition(Vector const &ep)
 {
 	this->_ep = ep;
 }
 
-void			Camera::setCenterOfInterest(Point const &coi)
+void			Camera::setCenterOfInterest(Vector const &coi)
 {
 	this->_coi = coi;
 }

@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/11 21:47:57 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/11 22:05:41 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/15 17:12:38 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ Vector::Vector(void): _x(0.0), _y(0.0), _z(0.0)
 	return ;
 }
 
-Vector::Vector(Point const &dest): _x(dest.getX()), _y(dest.getY()), _z(dest.getZ())
+Vector::Vector(double x, double y, double z): _x(x), _y(y), _z(z)
 {
 	return ;
 }
 
-Vector::Vector(Point const &orig, Point const &dest): _x(dest.getX() - orig.getX()), _y(dest.getY() - orig.getY()), _z(dest.getZ() - orig.getZ())
+Vector::Vector(Vector const &orig, Vector const &dest): _x(dest.getX() - orig.getX()), _y(dest.getY() - orig.getY()), _z(dest.getZ() - orig.getZ())
 {
 	return ;
 }
@@ -49,34 +49,34 @@ Vector								&Vector::operator=(Vector const &src)
 
 Vector								Vector::operator+(Vector const &rhs)
 {
-	return (Vector(Point(
+	return (Vector(
 					this->getX() + rhs.getX(),
 					this->getY() + rhs.getY(),
-					this->getZ() + rhs.getZ())));
+					this->getZ() + rhs.getZ()));
 }
 
 Vector								Vector::operator-(Vector const &rhs)
 {
-	return (Vector(Point(
+	return (Vector(
 					this->getX() - rhs.getX(),
 					this->getY() - rhs.getY(),
-					this->getZ() - rhs.getZ())));
+					this->getZ() - rhs.getZ()));
 }
 
 Vector								Vector::operator*(Vector const &rhs)
 {
-	return (Vector(Point(
+	return (Vector(
 					this->getY() * rhs.getZ() - this->getZ() * rhs.getY(),
 					this->getZ() * rhs.getX() - this->getX() * rhs.getZ(),
-					this->getX() * rhs.getY() - this->getY() * rhs.getX())));
+					this->getX() * rhs.getY() - this->getY() * rhs.getX()));
 }
 
 Vector								Vector::operator*(double const &rhs)
 {
-	return (Vector(Point(
+	return (Vector(
 					this->getX() * rhs,
 					this->getY() * rhs,
-					this->getZ() * rhs)));
+					this->getZ() * rhs));
 }
 
 //----- Getters & Setters -----

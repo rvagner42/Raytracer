@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 13:03:00 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/15 15:55:55 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/15 17:09:30 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,17 @@ int			main(void)
 	Uint8 const		*keys = SDL_GetKeyboardState(NULL);
 	Image			image(W, H, screen);
 	Camera			camera(
-			Point(0.0, 0.0, 50.0),
-			Point(0.0, 0.0, 0.0),
-			Vector(Point(0.0, 1.0, 0.0)),
+			Vector(0.0, 0.0, 50.0),
+			Vector(0.0, 0.0, 0.0),
+			Vector(0.0, 1.0, 0.0),
 			10.0,
 			100.0,
 			W / H
 			);
-	Sphere			sphere1(Point(0.0, 0.0, 0.0), 8.0, 0xFF0000);
-	Sphere			sphere2(Point(6.0, 5.0, 0.0), 5.0, 0x00FF00);
-	Sphere			sphere3(Point(0.0, 5.0, 5.0), 5.0, 0x0000FF);
-	Sphere			sphere4(Point(-3.0, -2.0, 15.0), 2.0, 0x00FFFF);
+	Sphere			sphere1(Vector(0.0, 0.0, 0.0), 8.0, 0xFF0000);
+	Sphere			sphere2(Vector(6.0, 5.0, 0.0), 5.0, 0x00FF00);
+	Sphere			sphere3(Vector(0.0, 5.0, 5.0), 5.0, 0x0000FF);
+	Sphere			sphere4(Vector(-3.0, -2.0, 15.0), 2.0, 0x00FFFF);
 	Scene			scene;
 
 	scene.addObject(&sphere1);
@@ -43,7 +43,7 @@ int			main(void)
 	scene.addObject(&sphere3);
 	scene.addObject(&sphere4);
 
-	scene.addLight(Point(5.0, 9.0, 10.0));
+	scene.addLight(Vector(5.0, 9.0, 10.0));
 
 	scene.computeImage(image, camera);
 	process.update();
