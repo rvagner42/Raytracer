@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 15:04:21 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/12 15:31:35 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/15 15:17:09 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,15 @@ class Object
 		virtual double intersect(Ray const &ray) = 0;
 
 		Uint32		getColor(void) const;
+		Point		getCenter(void) const;
+
+		void		setCenter(Point const &center);
 		void		setColor(int red, int green, int blue);
 		void		setColor(Uint32 color);
 
 	protected:
 		Uint32		_color;
+		Point		_center;
 };
 
 #endif

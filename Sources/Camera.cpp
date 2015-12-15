@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 09:18:57 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/15 10:23:13 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/15 12:37:55 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,19 +78,6 @@ Ray				Camera::build_ray(int x, int y)
 	ray.setDirection(Vector(this->getEyePosition(), screen_pixel));
 	return (ray);
 }
-
-void			Camera::move(double x, double y, double z)
-{
-	Point		new_pos(this->getEyePosition());
-
-	new_pos.setX(new_pos.getX() + x);
-	new_pos.setY(new_pos.getY() + y);
-	new_pos.setZ(new_pos.getZ() + z);
-
-	this->setEyePosition(new_pos);
-	this->calc_basis();
-}
-
 
 //----- Getters & Setters -----
 Point			Camera::getEyePosition(void) const

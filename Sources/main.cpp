@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 13:03:00 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/15 10:29:00 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/15 15:55:55 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int			main(void)
 			Point(0.0, 0.0, 0.0),
 			Vector(Point(0.0, 1.0, 0.0)),
 			10.0,
-			10.0,
+			100.0,
 			W / H
 			);
 	Sphere			sphere1(Point(0.0, 0.0, 0.0), 8.0, 0xFF0000);
@@ -43,32 +43,19 @@ int			main(void)
 	scene.addObject(&sphere3);
 	scene.addObject(&sphere4);
 
+	scene.addLight(Point(5.0, 9.0, 10.0));
+
 	scene.computeImage(image, camera);
 	process.update();
 	while (true)
 	{
-		if (process.check_ticks(100))
+		SDL_PollEvent(ev);
+		if (ev->type == SDL_QUIT)
+			break ;
+		else if (ev->type == SDL_KEYDOWN)
 		{
-			SDL_PollEvent(ev);
-			if (ev->type == SDL_QUIT)
+			if (keys[SDL_SCANCODE_ESCAPE])
 				break ;
-			else if (ev->type == SDL_KEYDOWN)
-			{
-				double x = 0, y = 0, z = 0;
-				if (keys[SDL_SCANCODE_ESCAPE])
-					break ;
-				if (keys[SDL_SCANCODE_DOWN])
-					y += 1;
-				if (keys[SDL_SCANCODE_UP])
-					y -= 1;
-				if (keys[SDL_SCANCODE_LEFT])
-					x -= 1;
-				if (keys[SDL_SCANCODE_RIGHT])
-					x += 1;
-				camera.move(x, y, z);
-				scene.computeImage(image, camera);
-				process.update();
-			}
 		}
 	}
 

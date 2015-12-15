@@ -6,34 +6,39 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 15:33:41 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/12 18:46:59 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/15 15:22:36 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Sphere.hpp"
 
-Sphere::Sphere(void): _center(Point(0.0, 0.0, 0.0)), _radius(5.0)
+Sphere::Sphere(void): _radius(5.0)
 {
+	this->setCenter(Point(0.0, 0.0, 0.0));
 	this->setColor(0xFFFFFF);
 }
 
-Sphere::Sphere(Point center, double radius): _center(center), _radius(radius)
+Sphere::Sphere(Point center, double radius): _radius(radius)
 {
+	this->setCenter(center);
 	this->setColor(0xFFFFFF);
 }
 
-Sphere::Sphere(Point center, double radius, Uint32 color): _center(center), _radius(radius)
+Sphere::Sphere(Point center, double radius, Uint32 color): _radius(radius)
 {
+	this->setCenter(center);
 	this->setColor(color);
 }
 
-Sphere::Sphere(Point center, double radius, int red, int green, int blue): _center(center), _radius(radius)
+Sphere::Sphere(Point center, double radius, int red, int green, int blue): _radius(radius)
 {
+	this->setCenter(center);
 	this->setColor(red, green, blue);
 }
 
-Sphere::Sphere(Sphere const &src): _center(src.getCenter()), _radius(src.getRadius())
+Sphere::Sphere(Sphere const &src): _radius(src.getRadius())
 {
+	this->setCenter(src.getCenter());
 	this->setColor(src.getColor());
 }
 
@@ -75,19 +80,9 @@ double							Sphere::intersect(Ray const &ray)
 }
 
 //----- Getters & Setters -----
-Point							Sphere::getCenter(void) const
-{
-	return (this->_center);
-}
-
 double							Sphere::getRadius(void) const
 {
 	return (this->_radius);
-}
-
-void							Sphere::setCenter(Point const &center)
-{
-	this->_center = center;
 }
 
 void							Sphere::setRadius(double radius)

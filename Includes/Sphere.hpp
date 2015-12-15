@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 15:16:15 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/12 16:04:46 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/15 15:17:24 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,11 @@ class Sphere: public Object
 		double			intersect(Ray const &ray);
 
 //----- Getters & Setters -----
-		Point			getCenter(void) const;
 		double			getRadius(void) const;
-		void			setCenter(Point const &center);
 		void			setRadius(double radius);
 
 
 	private:
-		Point			_center;
 		double			_radius;
 };
 
