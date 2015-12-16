@@ -6,7 +6,7 @@
 #    By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:        #
 #                                                      +#+   '+'   +#+         #
 #    Created:  2015/12/11 18:59:19 by rvagner           +#+,     ,+#+          #
-#    Modified: 2015/12/15 17:14:20 by rvagner             '*+###+*'            #
+#    Modified: 2015/12/16 10:44:57 by rvagner             '*+###+*'            #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME = raytracer
 
 SRC = main.cpp \
 	Camera.cpp \
+	Color.cpp \
 	Object.cpp \
 	Image.cpp \
 	Process.cpp \

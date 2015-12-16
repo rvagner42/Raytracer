@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 15:33:41 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/15 17:08:35 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/16 10:51:25 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,19 @@
 Sphere::Sphere(void): _radius(5.0)
 {
 	this->setCenter(Vector(0.0, 0.0, 0.0));
-	this->setColor(0xFFFFFF);
+	this->setColor(Color(0.0, 0.0, 0.0));
 }
 
 Sphere::Sphere(Vector center, double radius): _radius(radius)
 {
 	this->setCenter(center);
-	this->setColor(0xFFFFFF);
+	this->setColor(Color(0.0, 0.0, 0.0));
 }
 
-Sphere::Sphere(Vector center, double radius, Uint32 color): _radius(radius)
+Sphere::Sphere(Vector center, double radius, Color color): _radius(radius)
 {
 	this->setCenter(center);
 	this->setColor(color);
-}
-
-Sphere::Sphere(Vector center, double radius, int red, int green, int blue): _radius(radius)
-{
-	this->setCenter(center);
-	this->setColor(red, green, blue);
 }
 
 Sphere::Sphere(Sphere const &src): _radius(src.getRadius())

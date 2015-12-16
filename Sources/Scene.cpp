@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/14 11:04:55 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/15 17:13:27 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/16 10:56:42 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void							Scene::computeImage(Image &image, Camera &camera)
 	image.draw();
 }
 
-Uint32							Scene::computeColor(Vector p, double t, Ray &ray, Uint32 color)
+Uint32							Scene::computeColor(Vector p, double t, Ray &ray, Color color)
 {
 	Vector			surface(ray.getOrigin() + ray.getDirection() * t);
 
@@ -77,16 +77,8 @@ Uint32							Scene::computeColor(Vector p, double t, Ray &ray, Uint32 color)
 	light.normalize();
 
 	double			theta = norm.dotProduct(light);
-	theta = fmax(0.01, fmin(theta, 1.0));
 
-	Uint8			r = ((color >> 16) & 0xFF);
-	Uint8			g = ((color >> 8) & 0xFF);
-	Uint8			b = ((color) & 0xFF); 
-	r = r * theta;
-	g = g * theta;
-	b = b * theta;
-
-	return (65536 * r + 256 * g + b);
+	return (color.computeFinalColor(theta));
 }
 
 //----- Getters & Setters -----
