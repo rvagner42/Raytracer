@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/11 19:12:11 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/15 17:04:05 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/17 15:17:55 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ class Ray
 {
 	public:
 		Ray(void);
-		Ray(Vector origin, Vector direction);
+		Ray(Vector p_origin, Vector v_direction);
 		Ray(Ray const &src);
 		virtual ~Ray(void);
 
@@ -35,8 +35,8 @@ class Ray
 		void		setDirection(Vector const &dir);
 	
 	private:
-		Vector		_origin;
-		Vector		_direction;
+		Vector		_p_origin;
+		Vector		_v_direction;
 };
 
 #endif

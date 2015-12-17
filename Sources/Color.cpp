@@ -6,46 +6,33 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/15 18:03:49 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/16 14:42:18 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/17 15:15:49 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Color.hpp"
 
-Color::Color(void)
+Color::Color(void): _r(0.0), _g(0.0), _b(0.0)
 {
-	this->_r = 25.0;
-	this->_g = 25.0;
-	this->_b = 25.0;
-	this->_k_diff = 1.0;
-	this->_k_spec = 0.5;
+	return ;
 }
 
-Color::Color(double r, double g, double b)
+Color::Color(int r, int g, int b): _r(r / 255.0), _g(g / 255.0), _b(b / 255.0)
 {
-	this->_r = r;
-	this->_g = g;
-	this->_b = b;
-	this->_k_diff = 1.0;
-	this->_k_spec = 0.5;
+	this->_autoClamp();
+	return ;
 }
 
-Color::Color(double r, double g, double b, double k_diff, double k_spec)
+Color::Color(double r, double g, double b): _r(r), _g(g), _b(b)
 {
-	this->_r = r;
-	this->_g = g;
-	this->_b = b;
-	this->_k_diff = k_diff;
-	this->_k_spec = k_spec;
+	this->_autoClamp();
+	return ;
 }
 
-Color::Color(Color const &src)
+Color::Color(Color const &src): _r(src.getRed()), _g(src.getGreen()), _b(src.getBlue())
 {
-	this->_r = src.getRed();
-	this->_g = src.getGreen();
-	this->_b = src.getBlue();
-	this->_k_diff = src.getKDiff();
-	this->_k_spec = src.getKSpec();
+	this->_autoClamp();
+	return ;
 }
 
 Color::~Color(void)
@@ -53,18 +40,63 @@ Color::~Color(void)
 	return ;
 }
 
-//----- Member functions -----
-Uint32						Color::computeFinalColor(double theta) const
-{
-	double		diffuse = fmax(0.0, fmin(theta, 0.8)) * this->getKDiff();
-	double		final_r = this->getRed() * 0.2 + this->getRed() * diffuse;
-	double		final_g = this->getGreen() * 0.2 + this->getGreen() * diffuse;
-	double		final_b = this->getBlue() * 0.2 + this->getBlue() * diffuse;
+//----- Operators -----
 
-	return (65536 * (Uint8)final_r + 256 * (Uint8)final_g + (Uint8)final_b);
+Color						&Color::operator=(Color const &src)
+{
+	this->setRed(src.getRed());
+	this->setGreen(src.getGreen());
+	this->setBlue(src.getBlue());
+	return (*this);
+}
+
+Color						Color::operator+(Color const &rhs)
+{
+	return (Color(
+				this->getRed() + rhs.getRed(),
+				this->getGreen() + rhs.getGreen(),
+				this->getBlue() + rhs.getBlue()
+				));
+}
+
+Color						Color::operator-(Color const &rhs)
+{
+	return (Color(
+				this->getRed() - rhs.getRed(),
+				this->getGreen() - rhs.getGreen(),
+				this->getBlue() - rhs.getBlue()
+				));
+}
+
+Color						Color::operator*(Color const &rhs)
+{
+	return (Color(
+				this->getRed() * rhs.getRed(),
+				this->getGreen() * rhs.getGreen(),
+				this->getBlue() * rhs.getBlue()
+				));
+}
+
+Color						Color::operator*(double const &rhs)
+{
+	return (Color(
+				this->getRed() * rsh,
+				this->getGreen() * rhs,
+				this->getBlue() * rhs
+				));
+}
+
+//----- Member functions -----
+Uint32						Color::computeFinalColor(void) const
+{
+	Uint8	red   = static_cast<Uint8>(this->getRed() * 255);
+	Uint8	green = static_cast<Uint8>(this->getGreen() * 255);
+	Uint8	blue  = static_cast<Uint8>(this->getBlue() * 255);
+	return (65536 * red + 256 * green + blue);
 }
 
 //----- Getters & Setters -----
+
 double						Color::getRed(void) const
 {
 	return (this->_r);
@@ -80,12 +112,29 @@ double						Color::getBlue(void) const
 	return (this->_b);
 }
 
-double						Color::getKDiff(void) const
+void						Color::setRed(double red)
 {
-	return (this->_k_diff);
+	this->_r = red;
+	this->_autoClamp();
 }
 
-double						Color::getKSpec(void) const
+void						Color::setGreen(double green)
 {
-	return (this->_k_spec);
+	this->_g = green;
+	this->_autoClamp();
+}
+
+void						Color::setBlue(double blue)
+{
+	this->_b = blue;
+	this->_autoClamp();
+}
+
+//----- Private -----
+
+void						Color::autoClamp(void)
+{
+	this->_r = fmax(0.0, fmin(this->getRed(), 1.0));
+	this->_g = fmax(0.0, fmin(this->getGreen(), 1.0));
+	this->_b = fmax(0.0, fmin(this->getBlue(), 1.0));
 }

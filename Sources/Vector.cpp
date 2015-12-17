@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/11 21:47:57 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/15 17:12:38 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/17 14:09:17 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ Vector::Vector(double x, double y, double z): _x(x), _y(y), _z(z)
 	return ;
 }
 
-Vector::Vector(Vector const &orig, Vector const &dest): _x(dest.getX() - orig.getX()), _y(dest.getY() - orig.getY()), _z(dest.getZ() - orig.getZ())
+Vector::Vector(Vector const &orig, Vector const &dest): _x(dest.getX() - orig.getX()),
+	_y(dest.getY() - orig.getY()), _z(dest.getZ() - orig.getZ())
 {
 	return ;
 }
@@ -50,33 +51,66 @@ Vector								&Vector::operator=(Vector const &src)
 Vector								Vector::operator+(Vector const &rhs)
 {
 	return (Vector(
-					this->getX() + rhs.getX(),
-					this->getY() + rhs.getY(),
-					this->getZ() + rhs.getZ()));
+				this->getX() + rhs.getX(),
+				this->getY() + rhs.getY(),
+				this->getZ() + rhs.getZ()
+				));
 }
 
 Vector								Vector::operator-(Vector const &rhs)
 {
 	return (Vector(
-					this->getX() - rhs.getX(),
-					this->getY() - rhs.getY(),
-					this->getZ() - rhs.getZ()));
+				this->getX() - rhs.getX(),
+				this->getY() - rhs.getY(),
+				this->getZ() - rhs.getZ()
+				));
 }
 
 Vector								Vector::operator*(Vector const &rhs)
 {
 	return (Vector(
-					this->getY() * rhs.getZ() - this->getZ() * rhs.getY(),
-					this->getZ() * rhs.getX() - this->getX() * rhs.getZ(),
-					this->getX() * rhs.getY() - this->getY() * rhs.getX()));
+				this->getY() * rhs.getZ() - this->getZ() * rhs.getY(),
+				this->getZ() * rhs.getX() - this->getX() * rhs.getZ(),
+				this->getX() * rhs.getY() - this->getY() * rhs.getX()
+				));
 }
 
 Vector								Vector::operator*(double const &rhs)
 {
 	return (Vector(
-					this->getX() * rhs,
-					this->getY() * rhs,
-					this->getZ() * rhs));
+				this->getX() * rhs,
+				this->getY() * rhs,
+				this->getZ() * rhs
+				));
+}
+
+//----- Member functions -----
+
+double								Vector::magnitude(void) const
+{
+	return (sqrt(this->getX() * this->getX()
+				+ this->getY() * this->getY()
+				+ this->getZ() * this->getZ()));
+}
+
+void								Vector::normalize(void)
+{
+	if (this->getX() <= 1 && this->getY() <= 1 && this->getZ() <= 1)
+		return ;
+
+	double magn = this->magnitude();
+	double len = (magn != 0) ? 1 / magn : 0;
+
+	this->setX(this->getX() * len);
+	this->setY(this->getY() * len);
+	this->setZ(this->getZ() * len);
+}
+
+double								Vector::dotProduct(Vector const &rhs) const
+{
+	return (this->getX() * rhs.getX()
+			+ this->getY() * rhs.getY()
+			+ this->getZ() * rhs.getZ());
 }
 
 //----- Getters & Setters -----
@@ -111,37 +145,9 @@ void								Vector::setZ(double z)
 	this->_z = z;
 }
 
-//----- Others -----
-
-double								Vector::magnitude(void) const
-{
-	return (sqrt(this->getX() * this->getX()
-				+ this->getY() * this->getY()
-				+ this->getZ() * this->getZ()));
-}
-
-void								Vector::normalize(void)
-{
-	if (this->getX() <= 1 && this->getY() <= 1 && this->getZ() <= 1)
-		return ;
-
-	double magn = this->magnitude();
-	double len = (magn != 0) ? 1 / magn : 0;
-
-	this->setX(this->getX() * len);
-	this->setY(this->getY() * len);
-	this->setZ(this->getZ() * len);
-}
-
-double								Vector::dotProduct(Vector const &rhs) const
-{
-		return (this->getX() * rhs.getX()
-				+ this->getY() * rhs.getY()
-				+ this->getZ() * rhs.getZ());
-}
-
 std::ostream						&operator<<(std::ostream &o, Vector const &vector)
 {
-	o << "x= " << vector.getX() << "; y= " << vector.getY() << "; z= " << vector.getZ();
+	o << "Vector (x = " << vector.getX() << "; y = " << vector.getY()
+		<< "; z = " << vector.getZ() << ");";
 	return (o);
 }

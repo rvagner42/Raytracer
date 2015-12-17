@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/11 21:47:29 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/15 17:10:04 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/17 14:12:59 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,28 +26,25 @@ class Vector
 		virtual ~Vector(void);
 
 //----- Operators -----
-
 		Vector					&operator=(Vector const &src);
-
 		Vector					operator+(Vector const &rhs);
 		Vector					operator-(Vector const &rhs);
 		Vector					operator*(Vector const &rhs);
 		Vector					operator*(double const &rhs);
 
-//----- Getters & Setters -----
-
-		double					getX(void) const;
-		double					getY(void) const;
-		double					getZ(void) const;
-		void					setX(double x);
-		void					setY(double y);
-		void					setZ(double z);
-
-//----- Others -----
-
+//----- Member functions -----
 		void					normalize(void);
 		double					magnitude(void) const;
 		double					dotProduct(Vector const &rhs) const;
+
+//----- Getters & Setters -----
+		double					getX(void) const;
+		double					getY(void) const;
+		double					getZ(void) const;
+
+		void					setX(double x);
+		void					setY(double y);
+		void					setZ(double z);
 
 	private:
 		double					_x;

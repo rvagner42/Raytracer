@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 11:07:06 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/15 17:04:31 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/17 15:36:14 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ Ray::Ray(void)
 	return ;
 }
 
-Ray::Ray(Vector origin, Vector direction): _origin(origin), _direction(direction)
+Ray::Ray(Vector p_origin, Vector v_direction): _p_origin(p_origin), _v_direction(v_direction)
 {
 	return ;
 }
 
-Ray::Ray(Ray const &src): _origin(src.getOrigin()), _direction(src.getDirection())
+Ray::Ray(Ray const &src): _p_origin(src.getp_origin()), _v_direction(src.getv_direction())
 {
 	return ;
 }
@@ -35,29 +35,29 @@ Ray::~Ray(void)
 //----- Operators -----
 Ray						&Ray::operator=(Ray const &src)
 {
-	this->setOrigin(src.getOrigin());
-	this->setDirection(src.getDirection());
+	this->setp_origin(src.getp_origin());
+	this->setv_direction(src.getv_direction());
 	return (*this);
 }
 
 //----- Getters & Setters -----
 Vector					Ray::getOrigin(void) const
 {
-	return (this->_origin);
+	return (this->_p_origin);
 }
 
 Vector					Ray::getDirection(void) const
 {
-	return (this->_direction);
+	return (this->_v_direction);
 }
 
-void					Ray::setOrigin(Vector const &orig)
+void					Ray::setOrigin(Vector const &p_origin)
 {
-	this->_origin = orig;
+	this->_p_origin = p_origin;
 }
 
-void					Ray::setDirection(Vector const &dir)
+void					Ray::setDirection(Vector const &v_direction)
 {
-	this->_direction = dir;
-	this->_direction.normalize();
+	this->_v_direction = v_direction;
+	this->_v_direction.normalize();
 }

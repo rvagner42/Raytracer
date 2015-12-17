@@ -6,16 +6,17 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 09:18:57 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/16 15:03:27 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/17 16:48:07 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Camera.hpp"
 
-Camera::Camera(Vector ep, Vector coi, Vector up, double d, double fov, double ratio):
-	_ep(ep), _coi(coi), _up(up), _d(d), _fov(fov), _ratio(ratio)
+Camera::Camera(Vector p_eye, Vector p_target, Vector v_up, double img_dist,
+		double fov, double x_res, double y_res): _p_eye(p_eye), _p_target(p_target),
+	_v_up(v_up), _img_dist(img_dist), _fov(fov), _x_res(x_res), y_res(y_res)
 {
-	this->calc_basis();
+	this->calcBasis();
 }
 
 Camera::~Camera(void)
@@ -25,70 +26,56 @@ Camera::~Camera(void)
 
 //----- Member functions -----
 
-void			Camera::calc_basis(void)
+void			Camera::calcBasis(void)
 {
-	this->_n = Vector(this->getCenterOfInterest(), this->getEyePosition());
+	this->_v_n = this->getTarget() - this->getEye();
 	this->_n.normalize();
 
-	this->_u = this->getVectorUp() * this->_n;
+	this->_v_u = this->_v_n * this->getVectorUp();
 	this->_u.normalize();
 
-	this->_v = this->_n * this->_u;
-	this->calc_img();
-}
+	this->_v_v = this->_v_u * this->_v_n;
 
-void			Camera::calc_img(void)
-{
-	double		height = tan(this->getFOV() * 0.5) * this->getDist() * 2;
-	double		width = height * this->getRatio();
+	double half_width = tan(this->getFOV() * 0.5);
+	double ratio = this->getYRes() / this->getXRes();
+	double half_height = ratio * half_width;
 
-	Vector		image_center(this->getEyePosition() - (this->_n * this->getDist()));
-	
-	this->_blc = image_center - (this->_u * (width * 0.5)) - (this->_v * (height * 0.5));
+	this->_p_bottom_left = this->getEye() + (this->_v_n * this->getImgDist())
+		- (this->_v_v * half_height) - (this->_v_u * half_width);
 
-	this->_pw = width / X_RES;
-	this->_ph = height / Y_RES;
+	this->_v_inc_x = (this->_v_u * 2 * half_width) / this->getXRes();
+	this->_v_inc_y = (this->_v_v * 2 * half_height) / this->getYRes();
 }
 
 Ray				Camera::build_ray(int x, int y)
 {
-	Ray		ray;
-	Vector	screen_pixel(this->_blc + (this->_u * x * this->_pw) + (this->_v * y * this->_ph));
+	Vector	screen_pixel(this->_p_bottom_left + (this->_v_inc_x * x) + (this->_v_inc_y * y));
 
-	ray.setOrigin(this->getEyePosition());
-	ray.setDirection(Vector(this->getEyePosition(), screen_pixel));
-	return (ray);
-}
+	screen_pixel = screen_pixel + (this->_v_inc_x * 0.5) + (this->_v_inc_y * 0.5);
 
-void			Camera::move(int x, int y)
-{
-	Vector		new_point(this->getEyePosition());
-
-	new_point.setX(new_point.getX() + x);
-	new_point.setY(new_point.getY() + y);
-	this->setEyePosition(new_point);
-	this->calc_basis();
+	return (Ray(this->getEye(), screen_pixel - this->getEye()));
 }
 
 //----- Getters & Setters -----
-Vector			Camera::getEyePosition(void) const
+
+Vector			Camera::getEye(void) const
 {
-	return (this->_ep);
+	return (this->_p_eye);
 }
 
-Vector			Camera::getCenterOfInterest(void) const
+Vector			Camera::getTarget(void) const
 {
-	return (this->_coi);
+	return (this->_p_target);
 }
 
 Vector			Camera::getVectorUp(void) const
 {
-	return (this->_up);
+	return (this->_v_up);
 }
 
-double			Camera::getDist(void) const
+double			Camera::getImgDist(void) const
 {
-	return (this->_d);
+	return (this->_img_dist);
 }
 
 double			Camera::getFOV(void) const
@@ -96,9 +83,14 @@ double			Camera::getFOV(void) const
 	return (this->_fov);
 }
 
-double			Camera::getRatio(void) const
+double			Camera::getXRes(void) const
 {
-	return (this->_ratio);
+	return (this->_x_res);
+}
+
+double			Camera::getYRes(void) const
+{
+	return (this->_y_res);
 }
 
 void			Camera::setEyePosition(Vector const &ep)

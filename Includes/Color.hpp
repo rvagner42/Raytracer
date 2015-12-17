@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/15 17:18:58 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/16 14:03:41 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/17 14:52:19 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,36 @@ class Color
 {
 	public:
 		Color(void);
+		Color(int r, int g, int b);
 		Color(double r, double g, double b);
-		Color(double r, double g, double b, double k_diff, double k_spec);
 		Color(Color const &src);
-		~Color(void);
+		virtual ~Color(void);
+
+//----- Operators -----
+		Color					&operator=(Color const &src);
+		Color					operator+(Color const &rhs);
+		Color					operator-(Color const &rhs);
+		Color					operator*(Color const &rhs);
+		Color					operator*(double const &rhs);
 
 //----- Member functions -----
-		Uint32		computeFinalColor(double theta) const;
+		Uint32					computeColor(void) const;
 
 //----- Getters & Setters -----
-		double		getRed(void) const;
-		double		getGreen(void) const;
-		double		getBlue(void) const;
-		double		getKDiff(void) const;
-		double		getKSpec(void) const;
+		double					getRed(void) const;
+		double					getGreen(void) const;
+		double					getBlue(void) const;
+
+		void					setRed(double red);
+		void					setGreen(double green);
+		void					setBlue(double blue);
 
 	private:
-		double		_r;
-		double		_g;
-		double		_b;
-		double		_k_diff;
-		double		_k_spec;
+		double					_r;
+		double					_g;
+		double					_b;
+
+		void					_autoClamp(void);
 };
 
 #endif

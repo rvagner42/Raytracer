@@ -1,0 +1,212 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                            .:.               #
+#    Raytracer_cookbook                                 .+:  :+:  :+.          #
+#                                                      +:+   +:+   :+:         #
+#    By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:        #
+#                                                      +#+   '+'   +#+         #
+#    Created:  2015/12/16 20:45:54 by rvagner           +#+,     ,+#+          #
+#    Modified: 2015/12/17 16:27:12 by rvagner             '*+###+*'            #
+#                                                                              #
+# **************************************************************************** #
+
+To have a good raytracer, one must have some good basic tools.
+Each of these classes will be cannonical, have getters & setters, as well as a
+properly overloaded ostream operator (for debugging purposes).
+
+Vector class:
+	- three values of type double (x, y, z)
+	- substraction and addition
+	- scalar multiplication (multiply a vector by a scalar number)
+	- cross product (multiply a vector by another vector)
+	- magnitude calculation
+	- normalization
+	- dot product
+
+NB: the Vector class can and will be used as 3d points, so a good way to mark
+the difference between a vector and a point by using simple naming conventions,
+exemple:
+	- p_variable is a point
+	- v_variable is a vector
+
+Color class:
+	- three values of type double (r, g, b), each value going from 0.0 to 1.0
+	- substraction and addition
+	- multiplication by a scalar
+	- multiplication by a Color
+
+NB: it is important to make sure each attribute of the color stays between
+0.0 and 1.0 (unless you want some unpredictably funky colors on your image).
+A good way to do this is to have a private member function that clamps the
+attributes when a Color instance is created or when a value is set.
+
+Ray class:
+	- two Vector type values (p_origin and v_direction)
+
+What we will need next, is a Camera class, that will allow us to move freely
+around the scene, and to create an image plane, which we'll be using to render
+our scene.
+
+Camera class:
+	- two Vector type attributes, p_eye and p_target, which are respectively
+	  the position of the camera and the point we're looking at.
+	- one Vector type attribute, v_up, which is the up vector of the camera.
+	- one double type attribute, img_dist, which is the distance from the
+	  camera's position and the image plane.
+	- one double type attribute, fov, which is the field of view of the camera.
+	- two double type attribute, x_res and y_res, which are respectively the
+	  horizontal and vertical resolution of the image rendered.
+	- the three Vectors representing the "view matrix" of the camera:
+		- v_n = p_target - p_eye; v_n.normalize();
+		- v_u = v_n * v_up; v_u.normalize();
+		- v_v = v_u * v_n; (no need to normalize it, it already is)
+	- the half sizes of the image plane and the aspect ratio (double):
+		- half_width = tan(fov * 0.5);
+		- ratio = y_res / x_res;
+		- half_height = ratio * half_width;
+	- the bottom left point of the image plane:
+		- p_bottom_left = p_eye + (v_n * img_dist) - (v_v * half_height) - (v_u * half_width)
+	- two Vectors v_inc_x and v_inc_y, which we'll be using
+	to cast our rays:
+		- v_inc_x = (v_u * 2 * half_width) / x_res;
+		- v_inc_y = (v_v * 2 * half_height) / y_res;
+	- last, but not least, a member function that takes the 2d coordinates of
+	a pixel (x and y), and returns a ray like this:
+		- p_origin = p_eye;
+		- v_direction = (p_bottom_left + x * v_inc_x + y * v_inc_y) - p_eye;
+
+NB: there are lots of other ways to create a camera, you can pick whichever
+you prefer.
+
+Now that we have a good Camera class, we need objects that we can look at.
+Thus, we will create an abstract class Object, and we will later add derived
+classes for each type of object we want to put in our scene (Sphere, Plane,
+Cube, etc ...).
+
+Object class:
+	- a Color attribute, representing the basic color of our object.
+	- five const double attributes kd, ks, pr, n and ior, that we'll use to
+	  compute the final color of our object:
+		- kd is the diffuse coefficient.
+		- ks is the specular coefficient.
+		- pr is the reflectivity.
+		- n is the phong shininess.
+		- ior is the indice of refraction.
+	- a virtual member function intersect(Ray &ray), that returns the distance
+	  to the closest positive point of intersection with ray, or -1 if there
+	  is none.
+	- a virtual member function getNormal(Vector &p_intersect, Vector v_normal),
+	  that computes the Vector v_normal, which is the normal vector at the point
+	  of intersection, that we will use to compute lighting.
+
+Now, thanks to our Object class, we just have to create derived classes
+implementing the intersect() and getNormal() methods, depending on what kind
+of shape we want to render, here is a sphere, for exemple:
+
+Sphere class:
+	- a Vector attribute p_center.
+	- a double attribute radius.
+	- implementation of:
+	 -> double intersect(Ray &ray)
+		{
+			double a = ray.v_direction.dotProduct(ray.v_direction);
+			Vector v_to_center = ray.p_origin - p_center;
+			double b = v_to_center.dotProduct(ray.v_direction) * 2;
+			double c = v_to_center.dotProduct(v_to_center) - radius * radius;
+
+			double delta = b * b - 4 * a * c;
+			if (delta >= 0)
+			{
+				delta = sqrt(delta);
+				double t1 = (-b - delta) / (2 * a);
+				double t2 = (-b + delta) / (2 * a);
+				if (t2 > 0)
+				{
+					if (t1 < 0)
+						return (t2);
+					else
+						return ((t1 < t2) ? t1 : t2);
+				}
+				else
+				{
+					if (t1 > 0)
+						return (t1);
+					else
+						return (-1);
+				}
+			}
+			return (-1);
+		}
+	 -> void getNormal(Vector &p_intersect, Vector &v_normal)
+		{
+			v_normal(p_intersect - p_center);
+			v_normal.normalize();
+		}
+
+We have our camera, we have our objects, and now we need some lights, that will
+be used to compute the final color of each pixel (using the phong shading model).
+
+Light class:
+	- a Vector attribute p_pos, the position of our light.
+	- a Color attribute color, that will be white by default.
+
+That's it. We have all our tools ready to be used !
+The only step left, is to actually USE those tools.
+There are a lot of different ways to do this, depending on your coding style and
+what graphic library you use, but I decided to do it with a Scene class, that
+will contain all of our objects, all of our lightsources, and render an image
+when we tell it to (like after moving the camera, or every frame if we have some
+moving objects/lights) \o/ !
+
+The basic algorithm is the following:
+
+Color raytracer()
+{
+	for (every pixel)
+	{
+		double	t_min = INFINITY;
+		Object	*closest = NULL;
+		Ray		ray = camera.castRay(pixel_x, pixel_y);
+		Color	final_color(0.0, 0.0, 0.0);
+
+		for (every object in the scene)
+		{
+			double t = -1;
+			if ((t = object.intersect(ray)) > 0 && t < t_min)
+			{
+				t_min = t;
+				closest = &object;
+			}
+		}
+		if (closest != NULL)
+		{
+			// ambiant
+			final_color = closest.color * ka * closest.kd;
+			Vector		p_intersect = ray.p_origin + ray.v_direction * t_min;
+			Vector		v_normal;
+			closest.getNormal(p_intersect, v_normal);
+			for (every light)
+			{
+				Vector	v_light(light.p_pos - p_intersect);
+				v_light.normalize();
+				Ray		to_light(p_intersect, v_light);
+
+				if (check_shadows(to_light) == 0) // check if obstruction
+				{
+					// diffuse
+					double	theta = v_normal.dotProduct(v_light);
+					theta = (theta < 0.0) ? 0.0 : theta;
+					final_color = final_color + (closest.color * closest.kd
+							* light.color * theta);
+
+					// specular
+					Vector	v_reflexion = v_normal * (2 * theta) - v_light;
+					Vector	v_view = ray.direction * -1;
+					final_color = final_color + closest.color * closest.ks
+						* light_color * pow(v_reflexion.dotProduct(v_view), n);
+				}
+			}
+		}
+		return (final_color);
+	}
+}
