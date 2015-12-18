@@ -2,8 +2,7 @@
 
 A simple raytracer, implemented in C++, using backwards raytracing.
 
-It is possible to move around with the arrow keys.
-
+(does not currently compile)
 To compile:
 - If you don't have the SDL2 installed, you can do it via brew:
 	- brew update
