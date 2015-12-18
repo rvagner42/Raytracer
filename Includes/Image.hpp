@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/14 08:07:10 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/14 08:49:17 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/18 10:06:33 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class Image
 
 //----- Getters & Setters -----
 		void			setPixel(int x, int y, Uint32 color);
-		void			setPixel(int x, int y, int red, int green, int blue);
+		void			setPixel(int x, int y, Uint8 red, Uint8 green, Uint8 blue);
 
 	private:
 		int				_size_x;

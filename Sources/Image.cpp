@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/14 08:18:23 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/14 08:49:35 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/18 10:06:54 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void					Image::setPixel(int x, int y, Uint32 color)
 	this->_pixels[x][y] = color;
 }
 
-void					Image::setPixel(int x, int y, int red, int green, int blue)
+void					Image::setPixel(int x, int y, Uint8 red, Uint8 green, Uint8 blue)
 {
 	this->_pixels[x][y] = 65536 * red + 256 * green + blue;
 }
