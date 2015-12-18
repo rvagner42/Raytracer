@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 15:04:21 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/18 08:29:34 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/18 08:42:43 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ class Object
 	public:
 //----- Member functions -----
 		virtual double		intersect(Ray const &ray) = 0;
-		virtual Vector		getNormal(Vector const &p_intersect, Vector &v_normal) = 0;
+		virtual void		getNormal(Vector const &p_intersect, Vector &v_normal) = 0;
 
 //----- Getters & Setters
 		Color		getColor(void) const;

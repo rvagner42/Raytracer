@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 15:16:15 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/16 10:45:45 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/18 08:42:28 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ class Sphere: public Object
 {
 	public:
 		Sphere(void);
-		Sphere(Vector center, double radius);
-		Sphere(Vector center, double radius, Color color);
+		Sphere(Vector p_center, double radius);
+		Sphere(Vector p_center, double radius, Color color);
+		Sphere(Vector p_center, double radius, Color color, double kd, double ks,
+				double pr, double n, double ior);
 		Sphere(Sphere const &src);
 		~Sphere(void);
 
@@ -31,13 +33,18 @@ class Sphere: public Object
 
 //----- Member Functions -----
 		double			intersect(Ray const &ray);
+		void			getNormal(Vector const &p_intersect, Vector &v_normal);
 
 //----- Getters & Setters -----
+		Vector			getCenter(void) const;
 		double			getRadius(void) const;
+
+		void			setCenter(Vector p_center);
 		void			setRadius(double radius);
 
 
 	private:
+		Vector			_p_center;
 		double			_radius;
 };
 
