@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 15:33:41 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/18 09:31:17 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/18 15:13:40 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,11 @@ double							Sphere::intersect(Ray const &ray)
 				return (t1);
 			return (-1);
 		}
-		return (-1);
 	}
+	return (-1);
 }
 
-void							Sphere::getNormal(Vector const &p_intersect, Vector &v_normal)
+void							Sphere::getNormal(Vector &p_intersect, Vector &v_normal)
 {
 	v_normal = p_intersect - this->getCenter();
 	v_normal.normalize();

@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 11:07:06 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/17 15:36:14 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/18 11:29:23 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ Ray::Ray(Vector p_origin, Vector v_direction): _p_origin(p_origin), _v_direction
 	return ;
 }
 
-Ray::Ray(Ray const &src): _p_origin(src.getp_origin()), _v_direction(src.getv_direction())
+Ray::Ray(Ray const &src): _p_origin(src.getOrigin()), _v_direction(src.getDirection())
 {
 	return ;
 }
@@ -35,8 +35,8 @@ Ray::~Ray(void)
 //----- Operators -----
 Ray						&Ray::operator=(Ray const &src)
 {
-	this->setp_origin(src.getp_origin());
-	this->setv_direction(src.getv_direction());
+	this->setOrigin(src.getOrigin());
+	this->setDirection(src.getDirection());
 	return (*this);
 }
 

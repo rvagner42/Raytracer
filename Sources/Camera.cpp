@@ -6,17 +6,16 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 09:18:57 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/18 08:15:50 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/18 15:05:29 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Camera.hpp"
 
-Camera::Camera(Vector p_eye, Vector p_target, Vector v_up, double img_dist,
-		double fov, double x_res, double y_res): _p_eye(p_eye), _p_target(p_target),
-	_v_up(v_up), _img_dist(img_dist), _fov(fov), _x_res(x_res), y_res(y_res)
+Camera::Camera(Vector p_eye, Vector p_target, Vector v_up, double d, double fov, double ratio):
+	_p_eye(p_eye), _p_target(p_target), _v_up(v_up), _d(d), _fov(fov), _ratio(ratio)
 {
-	this->calcBasis();
+	this->calc_basis();
 }
 
 Camera::~Camera(void)
@@ -26,38 +25,42 @@ Camera::~Camera(void)
 
 //----- Member functions -----
 
-void			Camera::calcBasis(void)
+void			Camera::calc_basis(void)
 {
-	this->_v_n = this->getTarget() - this->getEye();
-	this->_n.normalize();
+	this->_v_n = Vector(this->getTarget(), this->getEye());
+	this->_v_n.normalize();
 
-	this->_v_u = this->_v_n * this->getVectorUp();
-	this->_u.normalize();
+	this->_v_u = this->getVectorUp() * this->_v_n;
+	this->_v_u.normalize();
 
-	this->_v_v = this->_v_u * this->_v_n;
-
-	double half_width = tan(this->getFOV() * 0.5);
-	double ratio = this->getYRes() / this->getXRes();
-	double half_height = ratio * half_width;
-
-	this->_p_bottom_left = this->getEye() + (this->_v_n * this->getImgDist())
-		- (this->_v_v * half_height) - (this->_v_u * half_width);
-
-	this->_v_inc_x = (this->_v_u * 2 * half_width) / this->getXRes();
-	this->_v_inc_y = (this->_v_v * 2 * half_height) / this->getYRes();
+	this->_v_v = this->_v_n * this->_v_u;
+	this->calc_img();
 }
 
-Ray				Camera::build_ray(int x, int y)
+void			Camera::calc_img(void)
 {
-	Vector	screen_pixel(this->_p_bottom_left + (this->_v_inc_x * x) + (this->_v_inc_y * y));
+	double		height = tan(this->getFOV() * 0.5) * this->getDist() * 2;
+	double		width = height * this->getRatio();
 
-	screen_pixel = screen_pixel + (this->_v_inc_x * 0.5) + (this->_v_inc_y * 0.5);
+	Vector		p_image_center(this->getEye() - (this->_v_n * this->getDist()));
+	
+	this->_p_blc = p_image_center - (this->_v_u * (width * 0.5)) - (this->_v_v * (height * 0.5));
 
-	return (Ray(this->getEye(), screen_pixel - this->getEye()));
+	this->_pw = width / X_RES;
+	this->_ph = height / Y_RES;
+}
+
+Ray				Camera::castRay(int x, int y)
+{
+	Ray		ray;
+	Vector	p_screen_pixel(this->_p_blc + (this->_v_u * x * this->_pw) + (this->_v_v * y * this->_ph));
+
+	ray.setOrigin(this->getEye());
+	ray.setDirection(Vector(this->getEye(), p_screen_pixel));
+	return (ray);
 }
 
 //----- Getters & Setters -----
-
 Vector			Camera::getEye(void) const
 {
 	return (this->_p_eye);
@@ -73,9 +76,9 @@ Vector			Camera::getVectorUp(void) const
 	return (this->_v_up);
 }
 
-double			Camera::getImgDist(void) const
+double			Camera::getDist(void) const
 {
-	return (this->_img_dist);
+	return (this->_d);
 }
 
 double			Camera::getFOV(void) const
@@ -83,14 +86,9 @@ double			Camera::getFOV(void) const
 	return (this->_fov);
 }
 
-double			Camera::getXRes(void) const
+double			Camera::getRatio(void) const
 {
-	return (this->_x_res);
-}
-
-double			Camera::getYRes(void) const
-{
-	return (this->_y_res);
+	return (this->_ratio);
 }
 
 void			Camera::setEye(Vector const &p_eye)
@@ -108,9 +106,9 @@ void			Camera::setVectorUp(Vector const &v_up)
 	this->_v_up = v_up;
 }
 
-void			Camera::setImgDist(double img_dist)
+void			Camera::setDist(double d)
 {
-	this->_img_dist = img_dist;
+	this->_d = d;
 }
 
 void			Camera::setFOV(double fov)
@@ -118,12 +116,7 @@ void			Camera::setFOV(double fov)
 	this->_fov = fov;
 }
 
-void			Camera::setXRes(double x_res)
+void			Camera::setRatio(double ratio)
 {
-	this->_x_res = x_res;
-}
-
-void			Camera::setYRes(double y_res)
-{
-	this->_y_res = y_res;
+	this->_ratio = ratio;
 }

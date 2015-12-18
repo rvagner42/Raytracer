@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/15 18:03:49 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/17 15:15:49 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/18 15:32:23 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,6 @@
 
 Color::Color(void): _r(0.0), _g(0.0), _b(0.0)
 {
-	return ;
-}
-
-Color::Color(int r, int g, int b): _r(r / 255.0), _g(g / 255.0), _b(b / 255.0)
-{
-	this->_autoClamp();
 	return ;
 }
 
@@ -80,19 +74,21 @@ Color						Color::operator*(Color const &rhs)
 Color						Color::operator*(double const &rhs)
 {
 	return (Color(
-				this->getRed() * rsh,
+				this->getRed() * rhs,
 				this->getGreen() * rhs,
 				this->getBlue() * rhs
 				));
 }
 
 //----- Member functions -----
-Uint32						Color::computeFinalColor(void) const
+Uint32						Color::computeColor(void) const
 {
-	Uint8	red   = static_cast<Uint8>(this->getRed() * 255);
-	Uint8	green = static_cast<Uint8>(this->getGreen() * 255);
-	Uint8	blue  = static_cast<Uint8>(this->getBlue() * 255);
-	return (65536 * red + 256 * green + blue);
+	Uint8	red   = static_cast<Uint8>(this->getRed() * 255.0);
+	Uint8	green = static_cast<Uint8>(this->getGreen() * 255.0);
+	Uint8	blue  = static_cast<Uint8>(this->getBlue() * 255.0);
+
+	Uint32 color = 65536 * red + 256 * green + blue;
+	return (color);
 }
 
 //----- Getters & Setters -----
@@ -132,9 +128,9 @@ void						Color::setBlue(double blue)
 
 //----- Private -----
 
-void						Color::autoClamp(void)
+void						Color::_autoClamp(void)
 {
-	this->_r = fmax(0.0, fmin(this->getRed(), 1.0));
-	this->_g = fmax(0.0, fmin(this->getGreen(), 1.0));
-	this->_b = fmax(0.0, fmin(this->getBlue(), 1.0));
+	this->_r = fmin(this->getRed(), 1.0);
+	this->_g = fmin(this->getGreen(), 1.0);
+	this->_b = fmin(this->getBlue(), 1.0);
 }

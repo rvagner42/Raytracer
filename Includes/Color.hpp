@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/15 17:18:58 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/17 14:52:19 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/18 14:14:12 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ class Color
 {
 	public:
 		Color(void);
-		Color(int r, int g, int b);
 		Color(double r, double g, double b);
 		Color(Color const &src);
 		virtual ~Color(void);

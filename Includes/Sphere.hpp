@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 15:16:15 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/18 08:42:28 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/18 11:31:07 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ class Sphere: public Object
 
 //----- Member Functions -----
 		double			intersect(Ray const &ray);
-		void			getNormal(Vector const &p_intersect, Vector &v_normal);
+		void			getNormal(Vector &p_intersect, Vector &v_normal);
 
 //----- Getters & Setters -----
 		Vector			getCenter(void) const;
