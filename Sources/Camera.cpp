@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 09:18:57 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/17 16:48:07 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/18 08:15:50 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,24 +93,24 @@ double			Camera::getYRes(void) const
 	return (this->_y_res);
 }
 
-void			Camera::setEyePosition(Vector const &ep)
+void			Camera::setEye(Vector const &p_eye)
 {
-	this->_ep = ep;
+	this->_p_eye = p_eye;
 }
 
-void			Camera::setCenterOfInterest(Vector const &coi)
+void			Camera::setTarget(Vector const &p_target)
 {
-	this->_coi = coi;
+	this->_p_target = p_target;
 }
 
-void			Camera::setVectorUp(Vector const &up)
+void			Camera::setVectorUp(Vector const &v_up)
 {
-	this->_up = up;
+	this->_v_up = v_up;
 }
 
-void			Camera::setDist(double d)
+void			Camera::setImgDist(double img_dist)
 {
-	this->_d = d;
+	this->_img_dist = img_dist;
 }
 
 void			Camera::setFOV(double fov)
@@ -118,7 +118,12 @@ void			Camera::setFOV(double fov)
 	this->_fov = fov;
 }
 
-void			Camera::setRatio(double ratio)
+void			Camera::setXRes(double x_res)
 {
-	this->_ratio = ratio;
+	this->_x_res = x_res;
+}
+
+void			Camera::setYRes(double y_res)
+{
+	this->_y_res = y_res;
 }

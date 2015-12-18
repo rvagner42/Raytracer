@@ -6,7 +6,7 @@
 #    By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:        #
 #                                                      +#+   '+'   +#+         #
 #    Created:  2015/12/16 20:45:54 by rvagner           +#+,     ,+#+          #
-#    Modified: 2015/12/17 16:27:12 by rvagner             '*+###+*'            #
+#    Modified: 2015/12/18 08:20:55 by rvagner             '*+###+*'            #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,7 +95,7 @@ Object class:
 	- a virtual member function intersect(Ray &ray), that returns the distance
 	  to the closest positive point of intersection with ray, or -1 if there
 	  is none.
-	- a virtual member function getNormal(Vector &p_intersect, Vector v_normal),
+	- a virtual member function getNormal(Vector &p_intersect, Vector &v_normal),
 	  that computes the Vector v_normal, which is the normal vector at the point
 	  of intersection, that we will use to compute lighting.
 

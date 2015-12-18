@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 09:05:10 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/17 16:48:45 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/18 08:14:00 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ class Camera
 		double		getXRes(void) const;
 		double		getYRes(void) const;
 
-		void		setEye(Vector const &e_p);
-		void		setTarget(Vector const &c_o_i);
-		void		setVectorUp(Vector const &up);
-		void		setImgDist(double d);
+		void		setEye(Vector const &p_eye);
+		void		setTarget(Vector const &p_target);
+		void		setVectorUp(Vector const &v_up);
+		void		setImgDist(double img_dist);
 		void		setFOV(double fov);
 		void		setXRes(double x_res);
 		void		setYRes(double y_res);
