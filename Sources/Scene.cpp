@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/14 11:04:55 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/18 15:33:45 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/18 16:32:09 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,14 @@ void								Scene::computeImage(Image &image, Camera &camera)
 								* (*it2)->getColor() * theta);
 
 						// specular
-						/*
-						 *Vector	v_reflexion = v_normal * (2 * theta) - v_light;
-						 *Vector	v_view = ray.getDirection();
-						 *final_color = final_color + closest->getColor() * closest->getKS()
-						 *    * (*it2)->getColor() * pow(v_reflexion.dotProduct(v_view), closest->getN());
-						 */
+						Vector	v_view = camera.getEye() - p_intersect;
+						v_view.normalize();
+						double	phi = v_view.dotProduct(v_normal);
+						phi = (phi < 0.0) ? 0.0 : phi;
+						Vector	v_reflexion = v_view + v_normal * (2 * phi) - v_light;
+						v_reflexion.normalize();
+						final_color = final_color + (*it2)->getColor() * closest->getKS()
+							* pow(v_reflexion.dotProduct(v_view), closest->getN());
 					}
 					it2++;
 				}

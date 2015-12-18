@@ -6,7 +6,7 @@
 /*   By: rvagner <rvagner@student.42.fr>              :#+    +#+    +#:       */
 /*                                                     +#+   '+'   +#+        */
 /*   Created:  2015/12/12 13:03:00 by rvagner           +#+,     ,+#+         */
-/*   Modified: 2015/12/18 15:38:36 by rvagner             '*+###+*'           */
+/*   Modified: 2015/12/18 16:28:11 by rvagner             '*+###+*'           */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,20 @@ int			main(void)
 			Vector(0.0, 1.0, 0.0),
 			10.0, 100.0, W / H
 			);
-	Sphere			sphere1(Vector(0.0, 0.0, 0.0), 8.0, Color(1.0, 0.0, 0.0), 0.7, 0.5, 0.2, 10, 0.2);
-	Sphere			sphere2(Vector(6.0, 5.0, 0.0), 5.0, Color(0.0, 1.0, 0.0), 0.7, 0.5, 0.2, 10, 0.2);
-	Sphere			sphere3(Vector(0.0, 5.0, 5.0), 5.0, Color(0.0, 0.0, 1.0), 0.7, 0.5, 0.2, 10, 0.2);
-	Sphere			sphere4(Vector(-3.0, -2.0, 15.0), 2.0, Color(0.0, 1.0, 1.0), 0.7, 0.5, 0.2, 10, 0.2);
+	Sphere			sphere1(Vector(0.0, 0.0, 0.0), 8.0, Color(1.0, 0.0, 0.0), 0.7, 0.8, 0.2, 100, 0.2);
+	/*
+	 *Sphere			sphere2(Vector(6.0, 5.0, 0.0), 5.0, Color(0.0, 1.0, 0.0), 0.7, 0.8, 0.2, 100, 0.2);
+	 *Sphere			sphere3(Vector(0.0, 5.0, 5.0), 5.0, Color(0.0, 0.0, 1.0), 0.7, 0.8, 0.2, 100, 0.2);
+	 *Sphere			sphere4(Vector(-3.0, -2.0, 15.0), 2.0, Color(0.0, 1.0, 1.0), 0.7, 0.8, 0.2, 100, 0.2);
+	 */
 	Scene			scene(0.3);
 
 	scene.addObject(&sphere1);
-	scene.addObject(&sphere2);
-	scene.addObject(&sphere3);
-	scene.addObject(&sphere4);
+	/*
+	 *scene.addObject(&sphere2);
+	 *scene.addObject(&sphere3);
+	 *scene.addObject(&sphere4);
+	 */
 
 	Light			light1(Vector(5.0, 9.0, 10.0));
 
